@@ -30,7 +30,7 @@ int main(int argc, char* argv[])
   }
 
   char string3[54];
-  strcpy(string3, string1);
+  strcat(string3, string1);
   strcat(string3, string2);
 
   printf("%s\n", string1);
