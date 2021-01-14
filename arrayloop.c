@@ -8,13 +8,16 @@ void getTestInput(int argc, char* argv[], int* a, int* b)
     sscanf(argv[2], "%d", b);
   }
 }
-
+ 
 
 
 // add your arrayAdd function here
-
-
-
+void arrayAdd(int arr[], int size, int inc)
+{
+  for (int i = 0; i < size; i++) {
+    arr[i] += inc;
+  }
+}
 
 int main(int argc, char* argv[]) 
 {
@@ -34,9 +37,14 @@ int main(int argc, char* argv[])
   // - fill it with the square of each index using a for loop i.e. 0, 1, 4, 9 etc
   // - pass the array to arrayAdd to add the increment of inc
   // - print out the array
+  int array[size];
+  for (int i = 0; i < size; i++) {
+    array[i] = i * i;
+  }
 
+  arrayAdd(array, size, 3);
 
-
-
-  
+  for (int i = 0; i < size; i++) {
+    printf("%d\n", array[i]);
+  }
 }
