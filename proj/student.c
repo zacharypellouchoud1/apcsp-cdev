@@ -68,9 +68,15 @@ void saveStudents(int key)
   //       katy jones 18 4532
   FILE* fp = fopen(STUFILE, "w");
   if (fp){ 
-        for(int i = 0; i <  numStudents; i++){
+    for(int i = 0; i <  numStudents; i++){
+      int keys[1];
+      keys[0]=key;
+      encrypt(students[i]->firstName,keys,1);
+      encrypt(students[i]->lastName,keys,1);
+      printf("saving: %s %s %d %ld\n",students[i] -> firstName, students[i] -> lastName, students[i] -> age, students[i] -> id);
       fprintf(fp,"%s %s %d %ld\n",students[i] -> firstName, students[i] -> lastName, students[i] -> age, students[i] -> id);
     }
+    printf("saved %d students\n", numStudents);
     fclose(fp);
   }
 }
@@ -78,17 +84,21 @@ void saveStudents(int key)
 void loadStudents(int key)
 {
   // load the students from the data file overwriting all exisiting students in memory
-  FILE* fp = fopen(STUFILE, "r");
-  if (fp){
+  FILE* fp = fopen(STUFILE, "r"); 
+ if (fp){
     char firstName[100];
     char lastName[100];
     int age;
     long id;
-
     int n = 0;
+    numStudents = 0;
     do {
       n = fscanf(fp,"%s %s %d %ld\n", firstName, lastName, &age, &id);
       if (n > 0) {
+        int keys[1];
+        keys[0]=key;
+        decrypt(firstName,keys,1);
+        decrypt(lastName,keys,1);
         createStudent(firstName, lastName, age, id);
       }
     } while (n > 0);

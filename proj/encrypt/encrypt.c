@@ -22,8 +22,29 @@ char shiftChar(char c, int shift, int direction)
   //   shiftChar('c', 3, 1) : 'f'
   //   shiftChar('S', 2, 0) : 'P'
   //   shiftChar('b', 3, 0) : '8'
+  int i;
+  for(i = 0; i < CHARS_LEN; i++){
+    if(c  == CHARS[i]){
+      break; 
+    }
+  }
+  if (direction == 1){
+       for(int j = 0; j < shift; j++){ 
+           i++;
+           if (i == CHARS_LEN){
+              i = 0;
+           }
+       }
+  } else { 
+    for(int j = 0; j < shift; j++){
+      i--;
+      if (i < 0){
+        i = CHARS_LEN-1;
+      }
+    }
+  }
+  return CHARS[i];
 }
-
 
 void encrypt(char str[], int shifts[], int shiftslen)
 {
