@@ -73,8 +73,14 @@ void saveStudents(int key)
       keys[0]=key;
       encrypt(students[i]->firstName,keys,1);
       encrypt(students[i]->lastName,keys,1);
-      printf("saving: %s %s %d %ld\n",students[i] -> firstName, students[i] -> lastName, students[i] -> age, students[i] -> id);
-      fprintf(fp,"%s %s %d %ld\n",students[i] -> firstName, students[i] -> lastName, students[i] -> age, students[i] -> id);
+      char ageString[100];
+      char idString[100];
+      sprintf(ageString, "%d", students[i]->age);
+      sprintf(idString, "%ld", students[i]->id);
+      encrypt(ageString, keys, 1);
+      encrypt(idString, keys, 1);
+      printf("saving: %s %s %s %s\n",students[i] -> firstName, students[i] -> lastName, ageString, idString);
+      fprintf(fp,"%s %s %s %s\n",students[i] -> firstName, students[i] -> lastName, ageString, idString);
     }
     printf("saved %d students\n", numStudents);
     fclose(fp);
@@ -88,17 +94,23 @@ void loadStudents(int key)
  if (fp){
     char firstName[100];
     char lastName[100];
+    char ageString[100];
+    char idString[100];
     int age;
     long id;
     int n = 0;
     numStudents = 0;
     do {
-      n = fscanf(fp,"%s %s %d %ld\n", firstName, lastName, &age, &id);
+      n = fscanf(fp,"%s %s %s %s\n", firstName, lastName, ageString, idString);
       if (n > 0) {
         int keys[1];
         keys[0]=key;
         decrypt(firstName,keys,1);
         decrypt(lastName,keys,1);
+        decrypt(ageString,keys,1);
+        decrypt(idString,keys,1);
+        sscanf(ageString, "%d", &age);
+        sscanf(idString, "%ld", &id);
         createStudent(firstName, lastName, age, id);
       }
     } while (n > 0);
